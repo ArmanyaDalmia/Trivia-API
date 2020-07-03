@@ -8,25 +8,37 @@ from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
+def paginate_questions(request, selection):
+    page = request.args.get('page', 1, type=int)
+    start =  (page - 1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
+
+    questions = [question.format() for question in selection]
+    current_questions = questions[start:end]
+
+    return current_questions
+
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   setup_db(app)
+  CORS(app, resources={'/': {'origins': '*'}})
+
+  # CORS Headers 
+  @app.after_request
+  def after_request(response):
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
+
+  #=====================================GET Requests=====================================
   
-  '''
-  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
-  '''
-
-  '''
-  @TODO: Use the after_request decorator to set Access-Control-Allow
-  '''
-
-  '''
+    '''
   @TODO: 
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-
 
   '''
   @TODO: 
@@ -43,11 +55,16 @@ def create_app(test_config=None):
 
   '''
   @TODO: 
-  Create an endpoint to DELETE question using a question ID. 
+  Create a GET endpoint to get questions based on category. 
 
-  TEST: When you click the trash icon next to a question, the question will be removed.
-  This removal will persist in the database and when you refresh the page. 
+  TEST: In the "List" tab / main screen, clicking on one of the 
+  categories in the left column will cause only questions of that 
+  category to be shown. 
   '''
+
+
+
+  #=====================================POST Requests=====================================
 
   '''
   @TODO: 
@@ -70,17 +87,7 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
-
-  '''
-  @TODO: 
-  Create a GET endpoint to get questions based on category. 
-
-  TEST: In the "List" tab / main screen, clicking on one of the 
-  categories in the left column will cause only questions of that 
-  category to be shown. 
-  '''
-
-
+  
   '''
   @TODO: 
   Create a POST endpoint to get questions to play the quiz. 
@@ -92,6 +99,18 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+
+  #=====================================DELETE Requests=====================================
+
+  '''
+  @TODO: 
+  Create an endpoint to DELETE question using a question ID. 
+
+  TEST: When you click the trash icon next to a question, the question will be removed.
+  This removal will persist in the database and when you refresh the page. 
+  '''
+
+  #=====================================Error Handlers=====================================
 
   '''
   @TODO: 
