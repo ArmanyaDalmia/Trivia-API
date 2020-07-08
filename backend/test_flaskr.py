@@ -39,27 +39,43 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['total_categories'])
-        # self.assertTrue(len(data['books']))
+        self.assertTrue(data['categories'])
 
+    def test_get_paginated_questions(self):
+        res = self.client().get('/questions')
+        data = json.loads(res.data)
 
+        self.assertEqual(res.staus_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(data['categories'])
 
-    # def test_get_paginated_books(self):
-    #     res = self.client().get('/books')
-    #     data = json.loads(res.data)
+    def test_404_get_paginated_questions(self):
+        res = self.client().get('/questions?page=1000')
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertTrue(data['total_books'])
-    #     self.assertTrue(len(data['books']))
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
-    # def test_404_sent_requesting_beyond_valid_page(self):
-    #     res = self.client().get('/books?page=1000', json={'rating': 1})
-    #     data = json.loads(res.data)
+    def test_get_paginated_questions_for_specific_category(self):
+        res = self.client().get('/categories/1/questions')
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 404)
-    #     self.assertEqual(data['success'], False)
-    #     self.assertEqual(data['message'], 'resource not found')
+        self.assertEqual(res.staus_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(data['current_category'])
+
+    def test_404_get_paginated_questions_for_specific_category(self):
+        res = self.client().get('/categories/1/questions?page=1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
     # def test_get_book_search_with_result(self):
     #     res = self.client().get('/books', json={'search': 'Brisingr'})
