@@ -45,13 +45,13 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/questions')
         data = json.loads(res.data)
 
-        self.assertEqual(res.staus_code, 200)
+        self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
         self.assertTrue(data['total_questions'])
         self.assertTrue(data['categories'])
 
-    def test_404_get_paginated_questions(self):
+    def test_404_sent_requesting_beyond_valid_page(self):
         res = self.client().get('/questions?page=1000')
         data = json.loads(res.data)
 
@@ -63,14 +63,22 @@ class TriviaTestCase(unittest.TestCase):
         res = self.client().get('/categories/1/questions')
         data = json.loads(res.data)
 
-        self.assertEqual(res.staus_code, 200)
+        self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
         self.assertTrue(data['total_questions'])
         self.assertTrue(data['current_category'])
 
-    def test_404_get_paginated_questions_for_specific_category(self):
+    def test_404_sent_requesting_beyond_valid_page_for_specific_category(self):
         res = self.client().get('/categories/1/questions?page=1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_404_sent_requesting_questions_for_invalid_category(self):
+        res = self.client().get('/categories/1000/questions')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
