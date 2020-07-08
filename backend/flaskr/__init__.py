@@ -67,19 +67,18 @@ def create_app(test_config=None):
 
     @app.route('/categories/<int:category_id/questions')
     def get_paginated_questions_for_specific_category(category_id):
-        category = Category.query.filter(Category.id == category_id).one_or_none()
-    
-        if category is None:
+
+        if not category_id:
             abort(404)
 
-        selection = Question.query.filter_by(category.id == category_id).all()
+        selection = Question.query.filter_by(category = category_id).all()
         current_questions = paginate_questions(request, selection)
 
         return jsonify({
             'success': True,
             'questions': current_questions,
             'total_questions': len(selection),
-            'current_category': category.type
+            'current_category': category_id
         })
 
 
@@ -95,6 +94,33 @@ def create_app(test_config=None):
     the form will clear and the question will appear at the end of the last page
     of the questions list in the "List" tab.  
     '''
+
+    @app.route('/questions', methods=['POST'])
+    def create_question():
+        body = request.get_json()
+
+        new_question = body.get('question', None)
+        new_answer = body.get('answer', None)
+        new_category = body.get('category', None)
+        new_difficulty = body.get('difficulty', None)
+
+        try:
+            question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+            question.insert()
+
+            selection = Question.query.order_by(Question.id).all()
+            current_questions = paginate_questions(request, selection)
+
+
+            return jsonify({
+                'success': True,
+                'created': question.id,
+                'questions': current_questions,
+                'total_questions': len(selection)
+            })
+
+        except:
+            abort(422)
 
     '''
     @TODO: 
