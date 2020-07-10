@@ -144,6 +144,9 @@ def create_app(test_config=None):
         new_category = body.get('category', None)
         new_difficulty = body.get('difficulty', None)
 
+        if (new_question == None or new_question == '') or (new_answer == None or new_answer == '') or (new_category == None or new_category == '') or (new_difficulty == None or new_difficulty == ''):
+            abort(422)
+
         try:
             question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
             question.insert()
@@ -179,11 +182,11 @@ def create_app(test_config=None):
 
         search = body.get('search', None)
 
-        if search is None:
-            abort(404)
+        if (search == None) or (search == ''):
+            abort(422)
 
         try:
-            selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search)))
+            selection = Question.query.order_by(Question.id).filter(Question.question.ilike('%{}%'.format(search))).all()
             current_questions = paginate_questions(request, selection)
 
             return jsonify({
@@ -218,7 +221,7 @@ def create_app(test_config=None):
             previous_questions = body.get('previous_questions', None)
 
             if (category == None) or (previous_questions == None):
-                abort(400)
+                abort(422)
 
             category_id = category['id']
             if category_id == 0:
