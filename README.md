@@ -344,7 +344,53 @@ The API will return four error types when requests fail:
   "total_questions": 20
 }
 ```
----
+
+#### POST /questions/search
+- General:
+    - Searches for a question using the provided search term
+    - Returns list of questions 
+- Sample: `curl http://127.0.0.1:5000/questions/search -X POST -H "Content-Type: application/json" -d '{"search":"tiTle"}'`
+```
+{
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }
+  ],
+  "success": true,
+  "total_questions": 2
+}
+```
+
+#### POST /quiz
+- General:
+    - Parameters: category, and list of previous questions
+    - Returns unused, random question from specified category to the user
+- Sample: `curl http://127.0.0.1:5000/quiz -X POST -H "Content-Type: application/json" -d '{"quiz_category": {"type": "Science", "id": "1"}, "previous_questions": [2,6]}'`
+```
+{
+  "question": {
+    "answer": "Alexander Fleming",
+    "category": 1,
+    "difficulty": 3,
+    "id": 21,
+    "question": "Who discovered penicillin?"
+  },
+  "success": true
+}
+```
 
 #### DELETE /books/{book_id}
 - General:
