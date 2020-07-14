@@ -9,10 +9,8 @@ The Trivia API is a trivia game which users can play in order to test their triv
 3) Add questions and require that they include question and answer text.
 4) Search for questions based on a text query string.
 5) Play the quiz game, randomizing either all questions or within a specific category. 
----
 
 ## API Reference
-----
 
 ### Getting Started
 
