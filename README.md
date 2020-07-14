@@ -81,7 +81,8 @@ The API will return four error types when requests fail:
     - User can access specific page using query parameters
 - Sample: `curl http://127.0.0.1:5000/questions?page=2`
 
-```   {
+```   
+{
 "categories": {
     "1": "Science",
     "2": "Art",
