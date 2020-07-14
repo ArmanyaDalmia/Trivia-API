@@ -74,65 +74,90 @@ The API will return four error types when requests fail:
 
 ---
 
-#### GET /books
+#### GET /questions
 - General:
-    - Returns a list of book objects, success value, and total number of books
-    - Results are paginated in groups of 8. Include a request argument to choose page number, starting from 1. 
-- Sample: `curl http://127.0.0.1:5000/books`
+    - Returns a list of questions objects, along with list of categories, and total number of questions
+    - Results are paginated in groups of 10
+    - User can access specific page using query parameters
+- Sample: `curl http://127.0.0.1:5000/questions?page=2`
 
-``` {
-  "books": [
+```   
+{
+"categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "questions": [
     {
-      "author": "Stephen King",
-      "id": 1,
-      "rating": 5,
-      "title": "The Outsider: A Novel"
+      "answer": "Agra",
+      "category": 3,
+      "difficulty": 2,
+      "id": 15,
+      "question": "The Taj Mahal is located in which Indian city?"
     },
     {
-      "author": "Lisa Halliday",
-      "id": 2,
-      "rating": 5,
-      "title": "Asymmetry: A Novel"
+      "answer": "Escher",
+      "category": 2,
+      "difficulty": 1,
+      "id": 16,
+      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
     },
     {
-      "author": "Kristin Hannah",
-      "id": 3,
-      "rating": 5,
-      "title": "The Great Alone"
+      "answer": "Mona Lisa",
+      "category": 2,
+      "difficulty": 3,
+      "id": 17,
+      "question": "La Giaconda is better known as what?"
     },
     {
-      "author": "Tara Westover",
-      "id": 4,
-      "rating": 5,
-      "title": "Educated: A Memoir"
+      "answer": "One",
+      "category": 2,
+      "difficulty": 4,
+      "id": 18,
+      "question": "How many paintings did Van Gogh sell in his lifetime?"
     },
     {
-      "author": "Jojo Moyes",
-      "id": 5,
-      "rating": 5,
-      "title": "Still Me: A Novel"
+      "answer": "Jackson Pollock",
+      "category": 2,
+      "difficulty": 2,
+      "id": 19,
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
     },
     {
-      "author": "Leila Slimani",
-      "id": 6,
-      "rating": 5,
-      "title": "Lullaby"
+      "answer": "The Liver",
+      "category": 1,
+      "difficulty": 4,
+      "id": 20,
+      "question": "What is the heaviest organ in the human body?"
     },
     {
-      "author": "Amitava Kumar",
-      "id": 7,
-      "rating": 5,
-      "title": "Immigrant, Montana"
+      "answer": "Alexander Fleming",
+      "category": 1,
+      "difficulty": 3,
+      "id": 21,
+      "question": "Who discovered penicillin?"
     },
     {
-      "author": "Madeline Miller",
-      "id": 8,
-      "rating": 5,
-      "title": "CIRCE"
+      "answer": "Blood",
+      "category": 1,
+      "difficulty": 4,
+      "id": 22,
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    },
+    {
+      "answer": "Scarab",
+      "category": 4,
+      "difficulty": 4,
+      "id": 23,
+      "question": "Which dung beetle was worshipped by the ancient Egyptians?"
     }
   ],
-"success": true,
-"total_books": 18
+  "success": true,
+  "total_questions": 9
 }
 ```
 ---
