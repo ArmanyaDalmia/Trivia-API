@@ -128,4 +128,4 @@ dmypy.json
 node_modules/
 
 #.vscode
-vscode/
+.vscode/
